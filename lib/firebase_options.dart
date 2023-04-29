@@ -17,16 +17,16 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -49,6 +49,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyB3-4khgXRaKPCYlSsljpz2GPX03AsFFZU',
+    appId: '1:976210618221:web:6641734065ff919ed4dc64',
+    messagingSenderId: '976210618221',
+    projectId: 'coextefortest',
+    authDomain: 'coextefortest.firebaseapp.com',
+    databaseURL: 'https://coextefortest-default-rtdb.firebaseio.com',
+    storageBucket: 'coextefortest.appspot.com',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyA8NGtRotAqaOIHd58dPwZkakw7ck-Kt6Y',
     appId: '1:976210618221:android:913da1f14cc26042d4dc64',
@@ -56,16 +66,5 @@ class DefaultFirebaseOptions {
     projectId: 'coextefortest',
     databaseURL: 'https://coextefortest-default-rtdb.firebaseio.com',
     storageBucket: 'coextefortest.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDJpxtjdCCfKf6YpT7Al0GeryhZnp9FYNA',
-    appId: '1:976210618221:ios:5b03c1ea536054bed4dc64',
-    messagingSenderId: '976210618221',
-    projectId: 'coextefortest',
-    databaseURL: 'https://coextefortest-default-rtdb.firebaseio.com',
-    storageBucket: 'coextefortest.appspot.com',
-    iosClientId: '976210618221-qdcd1b8bac6hbtfkveuib6c9hfbfot4b.apps.googleusercontent.com',
-    iosBundleId: 'com.example.test',
   );
 }
