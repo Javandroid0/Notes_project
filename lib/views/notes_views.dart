@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test/constants/routes.dart';
-import 'package:test/enums/menu_action.dart';
-import 'package:test/services/auth/auth_service.dart';
+import 'package:notes_project/constants/routes.dart';
+import 'package:notes_project/enums/menu_action.dart';
+import 'package:notes_project/services/auth/auth_service.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -43,7 +43,7 @@ class _NotesViewState extends State<NotesView> {
           )
         ],
       ),
-      body: Text('Hello Wrold'),
+      body: const Text('Hello Wrold'),
     );
   }
 }

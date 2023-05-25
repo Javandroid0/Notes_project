@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "coextefortest"
-  }
+    "default": "codefortest-d13f2",
+    "notesproject": "codefortest-d13f2"
+  },
+  "targets": {},
+  "etags": {}
 }
