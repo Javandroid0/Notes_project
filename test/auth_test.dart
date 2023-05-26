@@ -36,14 +36,15 @@ void main() {
         password: 'anypass',
       );
 
-      expect(badEmailUser, const TypeMatcher<UserNotFoundAuthException>());
+      expect(badEmailUser,
+          throwsA(const TypeMatcher<UserNotFoundAuthException>()));
 
       final badPasswordUser = provider.createUser(
         email: 'someome@bar.com',
         password: 'foobar',
       );
-
-      expect(badPasswordUser, const TypeMatcher<WrongPasswordAuthException>());
+      expect(badPasswordUser,
+          throwsA(const TypeMatcher<WrongPasswordAuthException>()));
 
       final user = await provider.createUser(
         email: 'foo',
@@ -104,9 +105,8 @@ class MuckAuthProvider implements AuthProvider {
   }) {
     if (!isInitialezed) throw NotInitializedException();
 
-    if (email == 'morteza@bar.com') UserNotFoundAuthException();
-
-    if (password == '12345') throw WeakPasswordAuthException();
+    if (email == 'foo@bar.com') throw UserNotFoundAuthException();
+    if (password == 'foobar') throw WrongPasswordAuthException();
 
     const user = AuthUser(isEmailVerified: false);
     _user = user;
@@ -125,7 +125,7 @@ class MuckAuthProvider implements AuthProvider {
   Future<void> sendEmailVerification() async {
     if (!isInitialezed) throw NotInitializedException();
     final user = _user;
-    if (_user == null) throw UserNotFoundAuthException();
+    if (user == null) throw UserNotFoundAuthException();
     const newUser = AuthUser(isEmailVerified: true);
     _user = newUser;
   }
