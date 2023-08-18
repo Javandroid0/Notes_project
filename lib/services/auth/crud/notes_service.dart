@@ -11,14 +11,20 @@ class NotesService {
 
   List<DatabaseNote> _notes = [];
 
-  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
   static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
 
+  NotesService._sharedInstance() {
+    _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
   factory NotesService() => _shared;
 
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
+
+  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
     try {
@@ -133,6 +139,7 @@ class NotesService {
     }
 
     const text = '';
+
     //create the note
     final noteId = await db.insert(noteTable, {
       userIdColumn: owner.id,
@@ -162,8 +169,9 @@ class NotesService {
       where: 'email = ?',
       whereArgs: [email.toLowerCase()],
     );
+
     if (result.isEmpty) {
-      throw CouldNotDeleteUser();
+      throw CouldNotFindUser();
     } else {
       return DatabaseUser.fromRow(result.first);
     }
@@ -172,6 +180,7 @@ class NotesService {
   Future<DatabaseUser> createUser({required String email}) async {
     await _ensureDnIsOpen();
     final db = _getDatabaseOrThrow();
+
     final result = await db.query(
       userTable,
       limit: 1,
@@ -187,10 +196,13 @@ class NotesService {
       userTable,
       {emailColumn: email.toLowerCase()},
     );
-    return DatabaseUser(
+
+    final x = DatabaseUser(
       id: userId,
       email: email,
     );
+
+    return x;
   }
 
   Future<void> deleteUser({required String email}) async {
@@ -238,6 +250,7 @@ class NotesService {
     }
     try {
       final docsPath = await getApplicationDocumentsDirectory();
+
       final dbPath = join(docsPath.path, dbName);
       final db = await openDatabase(dbPath);
       _db = db;
@@ -314,19 +327,18 @@ const isColumn = 'id';
 const emailColumn = 'email';
 const userIdColumn = 'user_id';
 const testColumn = 'text';
-const isSyncedWithCloudColumn = 'synced_with_cloud';
+const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 
-const createNoteTable = '''CREATE TABLE IF NOT EXISTS "note"(
-        "id" INTEGER NOT NULL,
-        "user_id" INTEGER NOT NULL,
-        "text" TEXT,
-        "is_synced_with_cloud" INTEGER NOT NULL DEFAULT 0,
-        FOREIGN KEY(""user_id) REFRENCES "user"("id"),
+const createUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
+        "id"	INTEGER NOT NULL,
+        "email"	TEXT NOT NULL UNIQUE,
         PRIMARY KEY("id" AUTOINCREMENT)
-      )''';
-
-const createUserTable = '''CREATE TABLE IF NOT EXISTS "user"(
-        "id" INTEGER NOT NULL,
-        "email" TEXT NOT NULL UNIQUE,
+      );''';
+const createNoteTable = '''CREATE TABLE IF NOT EXISTS "note" (
+        "id"	INTEGER NOT NULL,
+        "user_id"	INTEGER NOT NULL,
+        "text"	TEXT,
+        "is_synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
+        FOREIGN KEY("user_id") REFERENCES "user"("id"),
         PRIMARY KEY("id" AUTOINCREMENT)
-      )''';
+      );''';

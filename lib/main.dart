@@ -6,7 +6,6 @@ import 'package:notes_project/views/notes/new_note_view.dart';
 import 'package:notes_project/views/notes/notes_views.dart';
 import 'package:notes_project/views/register_view.dart';
 import 'package:notes_project/views/verify_email.dart';
-import 'package:path/path.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
