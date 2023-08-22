@@ -76,7 +76,6 @@ class _LoginViewState extends State<LoginView> {
                     (Route<dynamic> route) => false,
                   );
                 }
-                //here you left to have a dinner
               } on UserNotFoundAuthException {
                 await showErrorDialog(
                   context,
