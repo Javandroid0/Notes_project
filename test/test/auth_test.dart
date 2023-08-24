@@ -108,8 +108,8 @@ class MuckAuthProvider implements AuthProvider {
     if (email == 'foo@bar.com') throw UserNotFoundAuthException();
     if (password == 'foobar') throw WrongPasswordAuthException();
 
-    const user =
-        AuthUser(isEmailVerified: false, email: 'mortezaj015@gmail.com');
+    const user = AuthUser(
+        isEmailVerified: false, email: 'mortezaj015@gmail.com', id: 'my_id');
     _user = user;
     return Future.value(user);
   }
@@ -127,8 +127,8 @@ class MuckAuthProvider implements AuthProvider {
     if (!isInitialezed) throw NotInitializedException();
     final user = _user;
     if (user == null) throw UserNotFoundAuthException();
-    const newUser =
-        AuthUser(isEmailVerified: true, email: 'mortezaj015@gmail.com');
+    const newUser = AuthUser(
+        isEmailVerified: true, email: 'mortezaj015@gmail.com', id: 'my_id');
     _user = newUser;
   }
 }
