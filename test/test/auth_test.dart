@@ -131,4 +131,9 @@ class MuckAuthProvider implements AuthProvider {
         isEmailVerified: true, email: 'mortezaj015@gmail.com', id: 'my_id');
     _user = newUser;
   }
+
+  @override
+  Future<void> sendPasswordRest({required String toEmail}) {
+    throw UnimplementedError();
+  }
 }

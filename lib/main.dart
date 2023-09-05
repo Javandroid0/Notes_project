@@ -35,10 +35,9 @@ class HomePage extends StatelessWidget {
     context.read<AuthBloc>().add(const AuthEventInitialize());
     return BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
       if (state.isLoading) {
-        // LoadingScreen().show(
-        //     context: context,
-        //     text: state.loadingText ?? 'Please waite a moment');
-        LoadingScreen().hide();
+        LoadingScreen().show(
+            context: context,
+            text: state.loadingText ?? 'Please waite a moment');
       } else {
         LoadingScreen().hide();
       }
